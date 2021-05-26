@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="tf_prefix"    default="" />
+  <arg name="robot_x"   default="0.0" />
+  <arg name="robot_y"   default="0.0" />
+  <arg name="robot_yaw" default="0.0" />  
+  <arg name="model_name" default="mir"/>
+
+ <include file="$(find gazebo_ros)/launch/empty_world.launch">
+   <arg name="world_name" value="/home/fouad/catkin_ws/src/Auto_Tut5_Ex/APF_Map/APF_World.world"/>
+   <arg name="paused" value="false"/>
+   <arg name="use_sim_time" value="true"/>
+   <arg name="gui" value="true"/>
+   <arg name="headless" value="false"/>
+   <arg name="debug" value="false"/>
+ </include>
+
+ <param name="robot_description" command="$(find xacro)/xacro.py $(find mir_description)/urdf/mir_200/mir_200.gazebo.urdf" />
+
+ <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg model_name) -x $(arg robot_x) -y $(arg robot_y) -Y $(arg robot_yaw) " />
+
+
+
+</launch>
