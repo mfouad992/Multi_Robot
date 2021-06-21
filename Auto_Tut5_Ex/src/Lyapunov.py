@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-
-#########################################################################################################
-#Import the required libraries:
 import rospy
 from geometry_msgs.msg import Twist,Pose
 from nav_msgs.msg import Odometry
@@ -11,7 +8,6 @@ import sympy as sym
 from sympy import *
 #########################################################################################################
 
-#########################################################################################################
 #######################################################################
 #Initialize ROS Node
 rospy.init_node('Lyapunov_Pos_Control', anonymous=True) #Identify ROS Node
@@ -143,7 +139,6 @@ Rob_pos_0 = [position_0[0],position_0[1],position_0[3]]
 
 #########################################################################################################
 #Lyapunov Control (Position Control)
-## For details about the Lyapunov control, you can chech the textbook (S. G. Tzafestas, Introduction to mobile robot control. Elsevier, 2013.)
 def Lyapunov_Control(Rob_pos,Rob_pos_des):
   #Lyapunov Parameters
     K = [rospy.get_param("~K_x"),rospy.get_param("~K_theta")] #Lyapunov Control Gains [K_x,K_theta]
@@ -160,23 +155,19 @@ def Lyapunov_Control(Rob_pos,Rob_pos_des):
     Cont_input = [linear_v,angular_v]
     return Cont_input
 #########################################################################################################
-
 #########################################################################################################
 #Simulation While Loop
 
 while 1 and not rospy.is_shutdown():
     if flag_cont == 1 and flag_cont_1 == 1:
-	#Get Robot Current Position and Velocity
         Rob_pos = [position[0],position[1],position[3]]
         Rob_pos_des = [position_des[0],position_des[1],position_des[3]]
-
-	#Calculate the control effort from the Lyaponov-based position control law	
+        
         Cont_input = Lyapunov_Control(Rob_pos,Rob_pos_des)
-
         flag_cont = 0
         flag_cont_1 = 0
+
     else:
-        #Set the values of the Twist msg to be publeshed
         Cont_input = [0,0]
 
     v = round(float(Cont_input[0]),2) 	#Linear Velocity	
